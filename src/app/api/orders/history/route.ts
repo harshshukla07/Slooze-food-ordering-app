@@ -1,10 +1,9 @@
 
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { PrismaClient, Role, OrderStatus, Country } from '@prisma/client'; // Import Country
+import { Role, OrderStatus, Country } from '@prisma/client'; // Import Country
 import { Prisma } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 // Helper function for validation
 function isValidCountry(value: string): value is Country {

@@ -1,10 +1,9 @@
 
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { PrismaClient, Role, Country, OrderStatus } from '@prisma/client';
+import { Role, Country, OrderStatus } from '@prisma/client';
 import { Prisma } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 function isValidCountry(value: string): value is Country {
   return Object.values(Country).includes(value as Country);

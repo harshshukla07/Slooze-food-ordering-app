@@ -2,9 +2,8 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 // Make sure to import the Country and Role enums
-import { PrismaClient, Role, Country } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { Role, Country } from '@prisma/client';
+import { prisma } from '@/lib/prisma';
 
 // A helper function to check if a string is a valid Country enum value
 function isValidCountry(value: string): value is Country {

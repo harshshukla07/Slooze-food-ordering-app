@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { PrismaClient, Role, OrderStatus } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { Role, OrderStatus } from '@prisma/client';
+import { prisma } from '@/lib/prisma';
 
 export async function PUT(
   request: NextRequest,

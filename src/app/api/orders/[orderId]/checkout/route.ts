@@ -9,11 +9,11 @@ const prisma = new PrismaClient();
 // We define the type of the 'context' object directly in the function signature.
 export async function PUT(
   request: NextRequest,
-  context: { params: { orderId: string } }
+  context: { params: Promise<{ orderId: string }> }
 ) {
   try {
     // 1. Get the orderId from the 'context' object
-    const { orderId } = context.params;
+    const { orderId } = await context.params;
     const userRole = request.headers.get('x-user-role');
     const userId = request.headers.get('x-user-id');
 

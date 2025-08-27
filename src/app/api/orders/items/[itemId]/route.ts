@@ -8,10 +8,10 @@ const prisma = new PrismaClient();
 // --- UPDATE ITEM QUANTITY ---
 export async function PUT(
   request: NextRequest,
-  context: { params: { itemId: string } }
+  context: { params: Promise<{ itemId: string }> }
 ) {
   try {
-    const { itemId } = context.params;
+    const { itemId } = await context.params;
     const { quantity } = await request.json();
     const userId = request.headers.get('x-user-id');
 
@@ -58,10 +58,10 @@ export async function PUT(
 // --- REMOVE ITEM FROM CART ---
 export async function DELETE(
   request: NextRequest,
-  context: { params: { itemId: string } }
+  context: { params: Promise<{ itemId: string }> }
 ) {
   try {
-    const { itemId } = context.params;
+    const { itemId } = await context.params;
     const userId = request.headers.get('x-user-id');
     
     const updatedOrder = await prisma.$transaction(async (tx) => {

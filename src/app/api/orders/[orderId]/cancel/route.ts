@@ -6,10 +6,10 @@ const prisma = new PrismaClient();
 
 export async function PUT(
   request: NextRequest,
-  context: { params: { orderId: string } }
+  context: { params: Promise<{ orderId: string }> }
 ) {
   try {
-    const { orderId } = context.params;
+    const { orderId } = await context.params;
     const userRole = request.headers.get('x-user-role');
     const userId = request.headers.get('x-user-id');
 

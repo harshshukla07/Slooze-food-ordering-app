@@ -7,10 +7,10 @@ const prisma = new PrismaClient();
 
 export async function GET(
   request: NextRequest,
-  context: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const restaurantId = context.params.id;
+    const restaurantId = (await context.params).id;
     const userRole = request.headers.get('x-user-role');
     const userCountry = request.headers.get('x-user-country');
 

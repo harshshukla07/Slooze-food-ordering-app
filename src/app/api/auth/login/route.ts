@@ -46,7 +46,7 @@ export async function POST(req: Request) {
         role: user.role,
         country: user.country,
       },
-      JWT_SECRET,
+      JWT_SECRET!,
       {
         expiresIn: '1d',
       }

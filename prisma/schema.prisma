@@ -1,0 +1,102 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ENUMS for predefined values to ensure data consistency
+
+enum Role {
+  ADMIN
+  MANAGER
+  MEMBER
+}
+
+enum Country {
+  INDIA
+  AMERICA
+}
+
+enum OrderStatus {
+  PENDING   // When a user is adding items to the cart
+  PLACED    // After checkout and payment
+  CANCELLED // When an order is cancelled
+}
+
+// MODELS for our database tables
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String
+  password      String // In a real app, this should always be hashed
+  role          Role
+  country       Country
+  paymentMethod String? // Optional field for payment method
+
+  orders Order[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Restaurant {
+  id        String     @id @default(cuid())
+  name      String
+  country   Country // This is crucial for the bonus objective
+  menuItems MenuItem[]
+  orders    Order[]
+
+  @@map("restaurants")
+}
+
+model MenuItem {
+  id           String      @id @default(cuid())
+  name         String
+  price        Decimal     @db.Decimal(10, 2)
+  restaurantId String
+  restaurant   Restaurant  @relation(fields: [restaurantId], references: [id])
+  orderItems   OrderItem[]
+
+  @@map("menu_items")
+}
+
+model Order {
+  id           String      @id @default(cuid())
+  totalPrice   Decimal     @db.Decimal(10, 2)
+  status       OrderStatus @default(PENDING)
+  userId       String
+  user         User        @relation(fields: [userId], references: [id])
+  restaurantId String
+  restaurant   Restaurant  @relation(fields: [restaurantId], references: [id])
+
+  items OrderItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("orders")
+}
+
+// This is a "join table" to create a many-to-many relationship
+// between Orders and MenuItems. An order can have many items,
+// and an item can be in many orders.
+model OrderItem {
+  id         String   @id @default(cuid())
+  quantity   Int
+  orderId    String
+  order      Order    @relation(fields: [orderId], references: [id])
+  menuItemId String
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id])
+
+  @@map("order_items")
+}

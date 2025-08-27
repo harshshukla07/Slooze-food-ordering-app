@@ -22,8 +22,13 @@ export default function Navbar() {
                 <Link href="/cart" className="text-gray-600 hover:text-gray-800">
                   Cart
                 </Link>
+                <Link href="/orders" className="text-gray-600 hover:text-gray-800">
+                  My Orders
+                </Link>
                 <div className="text-right">
-                  <p className="font-semibold text-gray-800">{user.name}</p>
+                  <Link href="/profile" className="hover:text-indigo-600">
+                    <p className="font-semibold text-gray-800">{user.name}</p>
+                  </Link>
                   <p className="text-xs text-gray-600 capitalize">{user.role.toLowerCase()} - {user.country}</p>
                 </div>
                 <button
